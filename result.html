@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Result</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e0f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      width: 400px;
+      text-align: center;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .back {
+      margin-top: 20px;
+      display: inline-block;
+      text-decoration: none;
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+    }
+    .back:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>📊 Your Calculation</h2>
+    <div class="result" id="resultText">Calculating...</div>
+    <a href="index.html" class="back">🔙 Back</a>
+  </div>
+
+  <script>
+    function getQueryParam(param) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(param);
+    }
+
+    const mid1 = parseFloat(getQueryParam('mid1'));
+    const mid2 = parseFloat(getQueryParam('mid2'));
+    const avgInput = parseFloat(getQueryParam('avg'));
+    const grade = getQueryParam('grade');
+    const resultBox = document.getElementById('resultText');
+
+    const targetMap = {
+      O: 90,
+      "A+": 80,
+      A: 70,
+      B:60,
+      C:50
+    };
+    const targetScore = targetMap[grade];
+
+    if (isNaN(mid1) || mid1 < 0 || mid1 > 40) {
+      resultBox.innerHTML = "⚠️ Invalid Mid 1 marks.";
+    } else if (!grade || !targetScore) {
+      resultBox.innerHTML = "⚠️ Invalid or missing grade.";
+    } else if (!isNaN(mid2)) {
+      // Mid1 + Mid2 present
+      const avg = (mid1 + mid2) / 2;
+      const semNeeded = targetScore - avg;
+
+      if (semNeeded <= 0) {
+        resultBox.innerHTML = `🎉 With Mid1 = ${mid1}, Mid2 = ${mid2}, you're already eligible for Grade ${grade}.`;
+      } else if (semNeeded > 60) {
+        resultBox.innerHTML = `❌ You need ${semNeeded.toFixed(2)} in Sem, but maximum is 60. Grade ${grade} not possible.`;
+      } else {
+        resultBox.innerHTML = `📌 You need <b>${semNeeded.toFixed(2)}</b> in Sem to get Grade ${grade}.<br>Mid Avg: ${avg}`;
+      }
+    } else if (!isNaN(avgInput)) {
+      // Only Mid1 and Desired Avg
+      const mid2Needed = 2 * avgInput - mid1;
+      const semNeeded = targetScore - avgInput;
+
+      if (mid2Needed < 0 || mid2Needed > 40) {
+        resultBox.innerHTML = `❌ Mid2 required (${mid2Needed.toFixed(2)}) is invalid (0-40).`;
+      } else if (semNeeded > 60) {
+        resultBox.innerHTML = `❌ Sem required is ${semNeeded.toFixed(2)} (max 60). Grade ${grade} not achievable.`;
+      } else {
+        resultBox.innerHTML = `
+          ✅ To get Grade ${grade}:<br>
+          ➤ Mid2: <b>${mid2Needed.toFixed(2)}</b><br>
+          ➤ Sem: <b>${semNeeded.toFixed(2)}</b><br>
+          ➤ Desired Avg: ${avgInput}
+        `;
+      }
+    } else {
+      resultBox.innerHTML = "⚠️ Please provide Mid2 or desired average.";
+    }
+  </script>
+</body>
+</html>
