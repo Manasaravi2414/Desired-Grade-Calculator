@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Enter Your Marks</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      width: 400px;
+      text-align: center;
+    }
+    input, select {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #007BFF;
+      color: white;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Target Grade Calculator</h2>
+    <form action="result.html" method="GET">
+      <input type="number" name="mid1" placeholder="Mid 1 Marks (0-40)" required>
+      <input type="number" name="mid2" placeholder="Mid 2 Marks (optional)">
+      <input type="number" name="avg" placeholder="Desired Avg of Mid1 & Mid2 (if Mid2 not entered)">
+      
+      <select name="grade" required>
+        <option value="">-- Select Target Grade --</option>
+        <option value="O">O (90%)</option>
+        <option value="A+">A+ (80%)</option>
+        <option value="A">A (70%)</option>
+        <option value="B">B (60%)</option>
+        <option value="C">C (50%)</option>
+      </select>
+
+      <button type="submit">Calculate</button>
+    </form>
+  </div>
+</body>
+</html>
